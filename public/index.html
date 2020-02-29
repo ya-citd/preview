@@ -1,0 +1,23 @@
+<ul>
+    <li><a href="preview.html">preview</a></li>
+    <li><a href="random.html">random</a></li>
+    
+</ul>
+
+<p id='preview'>
+    preview:
+</p>
+
+<script>
+    const preview = document.getElementById('preview');
+
+    [0,1,2,3,4,5,6].forEach(num => {
+        const el = document.createElement('button');
+        el.innerText = `round-${num}`;
+        el.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.setItem("event-preview", num);
+        });
+        preview.appendChild(el);
+    });
+</script>

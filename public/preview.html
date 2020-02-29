@@ -1,0 +1,13 @@
+<style>
+    body { background-color: #000; }
+    img, .d { max-height: 100vh; opacity: 0.4; margin: 0 auto; display: block; }
+</style>
+
+<script src="event-bus.js"></script>
+<script>
+    bind1('event-preview', (number) => {
+        document.body.innerHTML = `<img src="./rounds/${number}.png" />`;
+    })
+</script>
+
+<body></body>
