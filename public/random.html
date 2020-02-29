@@ -72,6 +72,7 @@
         }
 
         function saveNames() {
+            console.log(names, usedNames);
             localStorage.setItem('names', JSON.stringify(names));
             localStorage.setItem('usedNames', JSON.stringify(usedNames));
         }
@@ -92,18 +93,20 @@
             title.classList.remove('winner');
 
             var timer = setInterval(function() {
-                var id = Math.floor(
-                    Math.random() * (
-                        (names.length - 1) - 0 + 1)
-                ) + 0;
-                currentName = title.innerText = names[id];
+                if (isInShuffle) {
+                    var id = Math.floor(
+                        Math.random() * (
+                            (names.length - 1) - 0 + 1)
+                    ) + 0;
+                    currentName = title.innerText = names[id];
+                }
             }, 70);
 
             setTimeout(function() {
+                isInShuffle = false;
                 clearInterval(timer);
                 title.classList.add('winner');
-                isInShuffle = false;
-                usedNames.push(currentName);
+                usedNames = usedNames.concat([currentName]).sort();
                 names = names.filter(name => name !== currentName);
                 body.classList.remove('in-progress');
                 saveNames();
