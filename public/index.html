@@ -1,40 +1,92 @@
 <script src="event-bus.js"></script>
 <ul>
-    <li><a href="preview.html">preview</a> <button data-xxx="preview.html">open preview</button></li>
-    <li><a href="random.html">random</a> <button data-xxx="random.html">open random</button></li>
-    
+    <li>
+        <a href="preview.html">preview</a>
+        <button data-xxx="preview.html">open preview</button>
+    </li>
+    <li>
+        <a href="random.html">random</a>
+        <button data-xxx="random.html">open random</button>
+    </li>
 </ul>
 
-<p id='preview'>
+<p id="preview">
     preview:
 </p>
 <p>
     <button id="random">start random</button>
+    <button id="reset">reset random</button>
 </p>
 
 <script>
-    document.querySelectorAll('[data-xxx]').forEach(el => {
-        el.addEventListener('click', (e) => {
-            e.preventDefault();
-            trigger1("event-navigate", el.dataset.xxx);
+    const DEFAULT_LIST = [
+        'Андрей Рыбалтовский',
+        'Ben Carlos',
+        'Мархиев (@Dzhabb)',
+        'Александр Булах',
+        'Владислав Хрипков',
+        'Дамир Масалимов',
+        'Николай Солодухин',
+        'Павел Бубликов',
+        'Владислав Магер',
+        'Александра Веселова',
+        'Данил Мельничук',
+        'Елена Жукова',
+        'Антон Скутин',
+        'Никита Дубко',
+        'Nursultan Berkimbayev',
+        'Илья Горский',
+        'Артём Реш',
+        'Юлия Долгун',
+        'Надежда Цивина',
+        'Владимир Линкевич',
+        'Зора (@Nande)',
+        'Алёна Сиприкова',
+        'Антон Кудрявцев'
+    ];
+
+    function initNavigation() {
+        document.querySelectorAll('[data-xxx]').forEach(el => {
+            el.addEventListener('click', e => {
+                e.preventDefault();
+                trigger1('event-navigate', el.dataset.xxx);
+            });
         });
-    });
+    }
 
-    const preview = document.getElementById('preview');
-    const random = document.getElementById('random');
+    function initRandom() {
+        const random = document.getElementById('random');
 
-    [0,1,2,3,4,5,6].forEach(num => {
-        const el = document.createElement('button');
-        el.innerText = `round-${num}`;
-        el.addEventListener('click', (e) => {
+        random.addEventListener('click', e => {
             e.preventDefault();
-            trigger1("event-preview", num);
+            trigger1('event-random');
         });
-        preview.appendChild(el);
-    });
+    }
 
-    random.addEventListener('click', (e) => {
-        e.preventDefault();
-        trigger1("event-random");
-    });
+    function initPreview() {
+        const preview = document.getElementById('preview');
+
+        [0, 1, 2, 3, 4, 5, 6].forEach(num => {
+            const el = document.createElement('button');
+            el.innerText = `round-${num}`;
+            el.addEventListener('click', e => {
+                e.preventDefault();
+                trigger1('event-preview', num);
+            });
+            preview.appendChild(el);
+        });
+    }
+
+    function initListReset() {
+        const reset = document.getElementById('reset');
+        reset.addEventListener('click', e => {
+            e.preventDefault();
+            trigger1('event-reset', JSON.stringify(DEFAULT_LIST));
+        });
+    }
+
+    initNavigation();
+    initRandom();
+    initPreview();
+    initListReset();
 </script>

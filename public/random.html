@@ -56,39 +56,32 @@
     <script>
         bind1('event-navigate', (url) => window.location = url);
 
-        var names = [
-            'Oconely',
-            'Эд',
-            'Dzhab',
-            'Arny',
-            'Владислав',
-            'Дамир',
-            'Николай',
-            'buba',
-            'Магер',
-            'aveselovalova',
-            'mlnchk',
-            'fat32',
-            'Антон',
-            'mefody',
-            'Нурсултан',
-            'Gorskiy',
-            'Reshnaut',
-            'Fenix',
-            'na_ts',
-            'Devision',
-            'Зора',
-            'Алёна Сиприкова',
-            'bevr_fvce',
-            'PetePearl',
-        ];
-
+        var names = [];
         var usedNames = [];
+
+        function reloadNames() {
+            try {
+                names = JSON.parse(localStorage.getItem('names')) || [];
+                usedNames = JSON.parse(localStorage.getItem('usedNames')) || [];
+            } catch (e) {
+                names = [];
+                usedNames = [];
+
+                console.log(e);
+            }
+        }
+
+        function saveNames() {
+            localStorage.setItem('names', JSON.stringify(names));
+            localStorage.setItem('usedNames', JSON.stringify(usedNames));
+        }
 
         var title = document.querySelector('h1');
         var body = document.querySelector('body');
         var isInShuffle = false;
         var currentName = '';
+
+        reloadNames();
 
         function shuffle() {
             if (isInShuffle) return;
@@ -113,10 +106,16 @@
                 usedNames.push(currentName);
                 names = names.filter(name => name !== currentName);
                 body.classList.remove('in-progress');
+                saveNames();
             }, 5000);
         }
 
         bind1('event-random', shuffle);
+        bind1('event-reset', (json) => {
+            names = JSON.parse(json);
+            usedNames = [];
+            saveNames();
+        });
     </script>
 </body>
 
