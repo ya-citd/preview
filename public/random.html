@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <title>Code in the Dark 2020</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        @font-face {
+            font-family: 'Press Start 2P';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Press Start 2P Regular'), local('PressStart2P-Regular'),
+                url('fonts/press-start-2p-v8-cyrillic-ext_cyrillic_latin-ext_latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+                url('fonts/press-start-2p-v8-cyrillic-ext_cyrillic_latin-ext_latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+        }
+
+        body {
+            font-family: 'Press Start 2P', monospace;
+            overflow: hidden;
+            height: 100vh;
+            background-color: #2b2727;
+        }
+
+        body.in-progress,
+        body.in-progress * {
+            cursor: none !important;
+        }
+
+        h1 {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            left: 0;
+            margin: 0;
+            color: #fff;
+            white-space: nowrap;
+            text-align: center;
+            font: normal 10vmin 'Press Start 2P', monospace;
+            font-weight: 100;
+            cursor: pointer;
+            transform: translateY(-50%);
+        }
+
+        h1.winner {
+            color: #59cb8f;
+        }
+    </style>
+    <script src="event-bus.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <h1>NaN</h1>
+    </div>
+    <script>
+        var names = [
+            'Oconely',
+            'Эд',
+            'Dzhab',
+            'Arny',
+            'Владислав',
+            'Дамир',
+            'Николай',
+            'buba',
+            'Магер',
+            'aveselovalova',
+            'mlnchk',
+            'fat32',
+            'Антон',
+            'mefody',
+            'Нурсултан',
+            'Gorskiy',
+            'Reshnaut',
+            'Fenix',
+            'na_ts',
+            'Devision',
+            'Зора',
+            'Алёна Сиприкова',
+            'bevr_fvce',
+            'PetePearl',
+        ];
+
+        var usedNames = [];
+
+        var title = document.querySelector('h1');
+        var body = document.querySelector('body');
+        var isInShuffle = false;
+        var currentName = '';
+
+        function shuffle() {
+            if (isInShuffle) return;
+            
+            body.classList.add('in-progress');
+
+            isInShuffle = true;
+            title.classList.remove('winner');
+
+            var timer = setInterval(function() {
+                var id = Math.floor(
+                    Math.random() * (
+                        (names.length - 1) - 0 + 1)
+                ) + 0;
+                currentName = title.innerText = names[id];
+            }, 70);
+
+            setTimeout(function() {
+                clearInterval(timer);
+                title.classList.add('winner');
+                isInShuffle = false;
+                usedNames.push(currentName);
+                names = names.filter(name => name !== currentName);
+                body.classList.remove('in-progress');
+            }, 5000);
+        }
+
+        bind1('event-random', shuffle);
+    </script>
+</body>
+
+</html>
