@@ -7,7 +7,8 @@
 <script>
     bind1('event-preview', (number) => {
         document.body.innerHTML = `<img src="./rounds/${number}.png" />`;
-    })
+    });
+    bind1('event-navigate', (url) => window.location = url);
 </script>
 
 <body></body>

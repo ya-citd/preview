@@ -1,6 +1,7 @@
+<script src="event-bus.js"></script>
 <ul>
-    <li><a href="preview.html">preview</a></li>
-    <li><a href="random.html">random</a></li>
+    <li><a href="preview.html">preview</a> <button data-xxx="preview.html">open preview</button></li>
+    <li><a href="random.html">random</a> <button data-xxx="random.html">open random</button></li>
     
 </ul>
 
@@ -12,6 +13,13 @@
 </p>
 
 <script>
+    document.querySelectorAll('[data-xxx]').forEach(el => {
+        el.addEventListener('click', (e) => {
+            e.preventDefault();
+            trigger1("event-navigate", el.dataset.xxx);
+        });
+    });
+
     const preview = document.getElementById('preview');
     const random = document.getElementById('random');
 
@@ -20,13 +28,13 @@
         el.innerText = `round-${num}`;
         el.addEventListener('click', (e) => {
             e.preventDefault();
-            localStorage.setItem("event-preview", num);
+            trigger1("event-preview", num);
         });
         preview.appendChild(el);
     });
 
     random.addEventListener('click', (e) => {
         e.preventDefault();
-        localStorage.setItem("event-random", Date.now());
+        trigger1("event-random");
     });
 </script>
